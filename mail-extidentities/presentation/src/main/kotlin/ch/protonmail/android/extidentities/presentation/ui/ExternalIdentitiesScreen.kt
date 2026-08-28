@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -257,7 +258,10 @@ private fun ProtonLoginDialog(
             color = ProtonTheme.colors.backgroundNorm
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier
+                    .padding(24.dp)
+                    .verticalScroll(rememberScrollState())
+                    .imePadding(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
@@ -483,7 +487,8 @@ private fun ServerConfigEditorDialog(
             Column(
                 modifier = Modifier
                     .padding(24.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .imePadding(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
