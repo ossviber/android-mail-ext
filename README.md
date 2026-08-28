@@ -8,6 +8,7 @@ enhancements for sending from external email identities:
 - Stored SMTP server configurations shared across identities
 - Sent e-mails are copied into your Proton Sent folder
 - Attachments support for external identities
+- The composer draft is discarded from Proton Drafts once the external send succeeds
 
 > **Current status**
 >
