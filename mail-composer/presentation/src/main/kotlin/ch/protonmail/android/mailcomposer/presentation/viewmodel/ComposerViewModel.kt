@@ -957,6 +957,11 @@ class ComposerViewModel @AssistedInject constructor(
             return
         }
 
+        // Block the debounced autosave while the SMTP round-trip runs, so a stale
+        // save cannot resurrect the draft after we discard it on success.
+        draftSavesBlocked = true
+        pendingStoreDraftJob?.cancelAndJoin()
+
         val attachmentsUi = composerStates.value.attachments.uiModel.attachments
         val attachments = if (attachmentsUi.isEmpty()) {
             emptyList()
@@ -979,6 +984,7 @@ class ComposerViewModel @AssistedInject constructor(
         ).fold(
             ifLeft = { smtpError ->
                 Timber.w("composer: external SMTP send failed: $smtpError")
+                draftSavesBlocked = false
                 emitNewStateFor(MainEvent.LoadingDismissed)
                 emitNewStateFor(
                     EffectsEvent.ErrorEvent.OnSendMessageError(
@@ -987,12 +993,39 @@ class ComposerViewModel @AssistedInject constructor(
                 )
             },
             ifRight = {
+                // The draft was created server-side when the composer opened, but the
+                // external SMTP path bypasses Proton's send pipeline which normally
+                // deletes it. Discard it now that the message was delivered.
+                discardExternalIdentityDraft()
                 appEventBroadcaster.emit(AppEvent.MessageSent)
                 emitNewStateFor(EffectsEvent.SendEvent.OnSendMessage)
             }
         )
 
         activeExternalIdentity = null
+    }
+
+    /**
+     * Deletes the current composer draft from the user's Proton Drafts after a
+     * successful external SMTP send. Best-effort: the mail is already delivered,
+     * so a failure here is only logged.
+     */
+    private suspend fun discardExternalIdentityDraft() {
+        getDraftId().fold(
+            ifLeft = { error ->
+                Timber.w("composer: failed to resolve draft id after external send: $error")
+            },
+            ifRight = { messageId ->
+                discardDraft(primaryUserId(), messageId).fold(
+                    ifLeft = { error ->
+                        Timber.w("composer: failed to discard draft after external send: $error")
+                    },
+                    ifRight = {
+                        Timber.d("composer: draft discarded after external send")
+                    }
+                )
+            }
+        )
     }
 
     private fun List<DraftRecipient>.flattenToSmtpRecipients(): List<SmtpMessageRecipient> =
