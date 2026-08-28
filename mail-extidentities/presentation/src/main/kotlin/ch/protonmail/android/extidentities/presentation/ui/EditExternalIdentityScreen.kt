@@ -426,7 +426,11 @@ private fun SentCopyAutomationCard(
     onDisable: () -> Unit,
     onApplyLabel: (Boolean) -> Unit
 ) {
-    val enabled = state.sentLabelId != null
+    // The toggle mirrors the server-side filter rule: on = automation active.
+    // The label itself survives toggling off, so the button below can still
+    // remove it from already-stored sent e-mails.
+    val automationActive = state.sentFilterId != null
+    val labelExists = state.sentLabelId != null
 
     HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
@@ -439,7 +443,7 @@ private fun SentCopyAutomationCard(
             )
         }
         Switch(
-            checked = enabled,
+            checked = automationActive,
             onCheckedChange = { want ->
                 when {
                     want -> onEnable()
@@ -466,7 +470,7 @@ private fun SentCopyAutomationCard(
             )
         }
 
-        enabled -> {
+        automationActive -> {
             Text(
                 text = stringResource(R.string.ext_identities_automation_done),
                 style = MaterialTheme.typography.bodyMedium,
@@ -494,12 +498,12 @@ private fun SentCopyAutomationCard(
         )
     }
 
-    // Filter-rule button: with the automation active it labels every existing
-    // sent e-mail; with the automation off it removes the label again.
+    // Filter-rule button: while the automation is active it labels every
+    // existing sent e-mail; after the toggle is switched off it removes the
+    // label again. Both directions need the label to exist.
     OutlinedButton(
-        onClick = { onApplyLabel(enabled) },
-        enabled = !state.isSettingUpAutomation && !state.isApplyingLabel &&
-            state.sentLabelId != null,
+        onClick = { onApplyLabel(automationActive) },
+        enabled = !state.isSettingUpAutomation && !state.isApplyingLabel && labelExists,
         modifier = Modifier.fillMaxWidth()
     ) {
         if (state.isApplyingLabel) {
@@ -508,7 +512,7 @@ private fun SentCopyAutomationCard(
         }
         Text(
             stringResource(
-                if (enabled) {
+                if (automationActive) {
                     R.string.ext_identities_apply_label_button
                 } else {
                     R.string.ext_identities_remove_label_button

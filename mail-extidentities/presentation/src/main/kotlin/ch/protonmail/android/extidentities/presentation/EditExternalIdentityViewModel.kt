@@ -193,6 +193,7 @@ class EditExternalIdentityViewModel @Inject constructor(
             sortOrder = current.sortOrder,
             sentLabelId = storedSentLabelId,
             sentLabelName = storedSentLabelName,
+            sentFilterId = storedSentFilterId,
             smtpServerConfigId = current.smtpServerConfigId.takeIf { it > 0L },
             smtpServer = config
         )
@@ -228,7 +229,14 @@ class EditExternalIdentityViewModel @Inject constructor(
         val current = mutableState.value
         if (current.isSettingUpAutomation) return
         if (editingIdentityId <= 0L) return
-        mutableState.update { it.copy(isSettingUpAutomation = true, automationFailed = false, needsProtonSession = false) }
+        mutableState.update {
+            it.copy(
+                isSettingUpAutomation = true,
+                automationFailed = false,
+                needsProtonSession = false,
+                labelApplyDone = false
+            )
+        }
         viewModelScope.launch {
             val session = protonSessionRepository.getStoredSession()
             if (session == null) {
@@ -320,7 +328,7 @@ class EditExternalIdentityViewModel @Inject constructor(
         val current = mutableState.value
         if (current.isSettingUpAutomation) return
         if (editingIdentityId <= 0L) return
-        mutableState.update { it.copy(isSettingUpAutomation = true, automationFailed = false) }
+        mutableState.update { it.copy(isSettingUpAutomation = true, automationFailed = false, labelApplyDone = false) }
         viewModelScope.launch {
             val email = current.email.trim()
             val labelName = storedSentLabelName
@@ -331,10 +339,12 @@ class EditExternalIdentityViewModel @Inject constructor(
                 val disabled = protonSessionRepository.setFilterEnabled(filterId, enabled = false)
                 Timber.i("ext-identities: filter disable ok=" + disabled + " id=" + filterId)
             }
-            setupExternalSentAutomation.clear(ExternalIdentityId(editingIdentityId))
-            storedSentLabelId = null
-            storedSentLabelName = null
-            mutableState.update { it.copy(isSettingUpAutomation = false, sentLabelId = null, sentLabelName = null) }
+            // Keep the label reference: the remove button still needs it to
+            // unlabel existing sent e-mails, and re-enabling reuses it. Only the
+            // filter id is dropped so the toggle reflects the automation being off.
+            setupExternalSentAutomation.setFilterId(ExternalIdentityId(editingIdentityId), null)
+            storedSentFilterId = null
+            mutableState.update { it.copy(isSettingUpAutomation = false, sentFilterId = null) }
         }
     }
 
