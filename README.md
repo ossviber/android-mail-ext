@@ -10,6 +10,13 @@ enhancements for sending from external email identities:
   labeling and a matching server-side filter)
 - Attachments support for external identities
 
+> **How this fork was made**
+>
+> This fork was built with **vibe coding** - assisted development where the
+> code is written collaboratively by humans and several different AI coding
+> models. Expect the code to be pragmatic rather than perfect; review anything
+> sensitive before relying on it.
+>
 > **Disclaimer**
 >
 > This project is **not affiliated with, endorsed by, or sponsored by Proton AG** or
