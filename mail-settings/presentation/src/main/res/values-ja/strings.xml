@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">アイコンを変更する</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">エラーが発生しました。再度お試しください。</string>
+    <string name="mail_settings_external_identities">外部アイデンティティ</string>
 </resources>

@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Zamenjaj ikono</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Prišlo je do napake. Poskusite znova.</string>
+    <string name="mail_settings_external_identities">Zunanje identitete</string>
 </resources>

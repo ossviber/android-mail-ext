@@ -66,6 +66,11 @@ kotlinx-immutable-collections = "0.4.0"
 kotlinx-serialization = "1.9.0"
 lottie = "6.7.1"
 material = "1.13.0"
+angus-jakarta-mail = "2.0.5"
+favre-bcrypt = "0.10.2"
+bcpg = "1.78.1"
+angus-activation = "2.0.3"
+jakarta-activation-api = "2.1.3"
 mockk = "1.14.7"
 paparazzi = "1.3.5"
 proton-core = "36.2.0"
@@ -129,6 +134,11 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-customview = { module = "androidx.customview:customview", version.ref = "androidx-customview" }
 androidx-customview-poolingcontainer = { module = "androidx.customview:customview-poolingcontainer", version.ref = "androidx-customview-poolingcontainer" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
+angus-jakarta-mail = { module = "org.eclipse.angus:jakarta.mail", version.ref = "angus-jakarta-mail" }
+favre-bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "favre-bcrypt" }
+bcpg = { module = "org.bouncycastle:bcpg-jdk18on", version.ref = "bcpg" }
+angus-activation = { module = "org.eclipse.angus:angus-activation", version.ref = "angus-activation" }
+jakarta-activation-api = { module = "jakarta.activation:jakarta.activation-api", version.ref = "jakarta-activation-api" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidx-hilt" }
 androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel-compose", version.ref = "androidx-hilt" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "androidx-hilt" }

@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Змяніць значок</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
+    <string name="mail_settings_external_identities">Знешнія псеўданімы</string>
 </resources>

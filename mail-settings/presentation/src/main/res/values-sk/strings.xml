@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Zmeniť ikonu</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Vyskytla sa chyba. Skúste znova.</string>
+    <string name="mail_settings_external_identities">Externé identity</string>
 </resources>

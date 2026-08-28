@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">아이콘 변경</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">오류 발생. 다시 시도하세요.</string>
+    <string name="mail_settings_external_identities">외부 아이덴티티</string>
 </resources>

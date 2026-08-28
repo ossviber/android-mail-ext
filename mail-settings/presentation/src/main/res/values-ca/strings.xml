@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Canvia la icona</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">S\'ha produït un error. Proveu de nou.</string>
+    <string name="mail_settings_external_identities">Identitats externes</string>
 </resources>

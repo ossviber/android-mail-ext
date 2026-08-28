@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Changer l\'icône</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Une erreur est survenue. Veuillez réessayer.</string>
+    <string name="mail_settings_external_identities">Identités externes</string>
 </resources>

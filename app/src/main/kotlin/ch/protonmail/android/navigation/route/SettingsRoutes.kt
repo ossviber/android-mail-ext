@@ -40,6 +40,9 @@ import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinS
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialogKeys.AutoLockPinDialogModeKey
 import ch.protonmail.android.mailpinlock.presentation.pin.ui.dialog.AutoLockPinScreenDialogKeys.AutoLockPinDialogResultKey
 import ch.protonmail.android.mailcontentsearch.presentation.settings.ui.ContentSearchSettingsScreen
+import ch.protonmail.android.extidentities.presentation.ui.EditExternalIdentityScreen
+import ch.protonmail.android.extidentities.presentation.ui.EditExternalIdentityScreenKeys
+import ch.protonmail.android.extidentities.presentation.ui.ExternalIdentitiesScreen
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.appicon.ui.AppIconSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
@@ -195,6 +198,37 @@ internal fun NavGraphBuilder.addContentSearchSettings(navController: NavHostCont
         ProtonInvertedTheme {
             ContentSearchSettingsScreen(
                 modifier = Modifier,
+                onBackClick = { navController.navigateBack() }
+            )
+        }
+    }
+}
+
+internal fun NavGraphBuilder.addExternalIdentitiesSettings(navController: NavHostController) {
+    composableWithTransitions(route = Screen.ExternalIdentitiesSettings.route) {
+        ProtonInvertedTheme {
+            ExternalIdentitiesScreen(
+                modifier = Modifier,
+                onBackClick = { navController.navigateBack() },
+                onAddIdentityClick = {
+                    navController.navigate(Screen.EditExternalIdentitySettings(identityId = null))
+                },
+                onEditIdentityClick = { identityId ->
+                    navController.navigate(Screen.EditExternalIdentitySettings(identityId.value))
+                }
+            )
+        }
+    }
+}
+
+internal fun NavGraphBuilder.addEditExternalIdentitySettings(navController: NavHostController) {
+    composableWithTransitions(route = Screen.EditExternalIdentitySettings.route) { backStackEntry ->
+        ProtonInvertedTheme {
+            EditExternalIdentityScreen(
+                modifier = Modifier,
+                identityId = backStackEntry.arguments
+                    ?.getString(EditExternalIdentityScreenKeys.IDENTITY_ID_KEY)
+                    ?.toLongOrNull(),
                 onBackClick = { navController.navigateBack() }
             )
         }

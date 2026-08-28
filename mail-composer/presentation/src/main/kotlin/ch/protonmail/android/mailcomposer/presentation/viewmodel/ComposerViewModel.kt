@@ -28,7 +28,14 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.design.compose.viewmodel.stopTimeoutMillis
+import ch.protonmail.android.extidentities.domain.ExternalIdentity
+import ch.protonmail.android.extidentities.domain.SmtpError
+import ch.protonmail.android.extidentities.domain.model.SmtpMessageRecipient
+import ch.protonmail.android.extidentities.domain.usecase.ObserveExternalIdentities
+import ch.protonmail.android.extidentities.domain.usecase.SendViaExternalIdentity
 import ch.protonmail.android.mailattachments.domain.model.AttachmentId
+import ch.protonmail.android.mailattachments.presentation.model.AttachmentMetadataUiModel
+import ch.protonmail.android.mailcomposer.presentation.usecase.GetExternalIdentityAttachments
 import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.model.decode
@@ -43,7 +50,9 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftFieldsWithSyncStatus
 import ch.protonmail.android.mailcomposer.domain.model.DraftHead
 import ch.protonmail.android.mailcomposer.domain.model.DraftMimeType
+import ch.protonmail.android.mailcomposer.domain.model.DraftRecipient
 import ch.protonmail.android.mailcomposer.domain.model.OpenDraftError
+import ch.protonmail.android.mailcomposer.domain.model.SendDraftError
 import ch.protonmail.android.mailcomposer.domain.model.PasteMimeType
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
@@ -198,6 +207,9 @@ class ComposerViewModel @AssistedInject constructor(
     private val canSendWithExpirationTime: CanSendWithExpirationTime,
     private val convertInlineToAttachment: ConvertInlineImageToAttachment,
     private val sanitizePastedContent: SanitizePastedContent,
+    private val sendMessageViaExternalIdentity: SendViaExternalIdentity,
+    private val getExternalIdentityAttachments: GetExternalIdentityAttachments,
+    private val observeExternalIdentities: ObserveExternalIdentities,
     private val appEventBroadcaster: AppEventBroadcaster,
     @IsComposerFormatMenuEnabled private val isFormatMenuEnabled: FeatureFlag<Boolean>,
     observePrimaryUserId: ObservePrimaryUserId
@@ -237,6 +249,18 @@ class ComposerViewModel @AssistedInject constructor(
 
     @Volatile
     private var draftSavesBlocked: Boolean = false
+
+    // --- External identities (custom SMTP senders), keyed by lowercase email ---
+    private var externalIdentities: Map<String, ExternalIdentity> = emptyMap()
+    private var activeExternalIdentity: ExternalIdentity? = null
+
+    init {
+        observeExternalIdentities()
+            .onEach { identities ->
+                externalIdentities = identities.associateBy { identity -> identity.email.lowercase() }
+            }
+            .launchIn(viewModelScope)
+    }
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val composerActionsChannel = Channel<ComposerAction>(Channel.BUFFERED)
@@ -648,6 +672,17 @@ class ComposerViewModel @AssistedInject constructor(
     }
 
     private suspend fun onChangeSender(sender: SenderUiModel) {
+        // External identity selected: bypass the Rust draft entirely and remember it
+        // for the send branch. The displayed sender updates without crypto refresh.
+        externalIdentities[sender.email.lowercase()]?.let { identity ->
+            activeExternalIdentity = identity
+            val currentBody = DraftBody(bodyTextField.text.toString())
+            val draftDisplayBody = buildDraftDisplayBody(draftHead.value, currentBody)
+            emitNewStateFor(CompositeEvent.UserChangedSender(SenderEmail(sender.email), draftDisplayBody))
+            return
+        }
+        activeExternalIdentity = null
+
         val newSender = SenderEmail(sender.email)
 
         // Keep previous state to restore on failure and clear encryption info
@@ -691,7 +726,11 @@ class ComposerViewModel @AssistedInject constructor(
                 emitNewStateFor(EffectsEvent.ErrorEvent.OnGetAddressesError)
             }
             .onRight { senderAddresses ->
-                val addresses = senderAddresses.addresses.map { SenderUiModel(it.value) }
+                val addresses = senderAddresses.addresses.map { SenderUiModel(it.value) } +
+                    externalIdentities.values
+                        .filter { it.isEnabled }
+                        .sortedBy { it.sortOrder }
+                        .map { SenderUiModel(it.email) }
                 emitNewStateFor(CompositeEvent.SenderAddressesListReady(addresses))
             }
     }
@@ -839,6 +878,13 @@ class ComposerViewModel @AssistedInject constructor(
             return
         }
 
+        // External identities send through their own SMTP server: Proton-side
+        // expiration support does not apply, so skip that check entirely.
+        if (activeExternalIdentity != null) {
+            onSendMessage()
+            return
+        }
+
         when (val result = canSendWithExpirationTime().getOrNull()) {
             SendWithExpirationTimeResult.CanSend -> onSendMessage()
             is SendWithExpirationTimeResult.ExpirationUnsupportedForSome -> {
@@ -860,6 +906,11 @@ class ComposerViewModel @AssistedInject constructor(
     }
 
     private suspend fun onSendMessage() {
+        activeExternalIdentity?.let { identity ->
+            sendViaExternalSmtp(identity)
+            return
+        }
+
         emitNewStateFor(MainEvent.CoreLoadingToggled)
         draftSavesBlocked = true
         pendingStoreDraftJob?.cancelAndJoin()
@@ -886,6 +937,82 @@ class ComposerViewModel @AssistedInject constructor(
                 }
             }
         )
+    }
+
+    /**
+     * Sends the current draft through an external identity's own SMTP server.
+     * Deliberately bypasses forceDraftSave/Rust send: Proton servers cannot accept
+     * a non-Proton From address, and drafts for external identities stay local.
+     */
+    private suspend fun sendViaExternalSmtp(identity: ExternalIdentity) {
+        val fields = currentDraftFields()
+
+        val to = fields.recipientsTo.value.flattenToSmtpRecipients()
+        val cc = fields.recipientsCc.value.flattenToSmtpRecipients()
+        val bcc = fields.recipientsBcc.value.flattenToSmtpRecipients()
+
+        if (to.isEmpty() && cc.isEmpty() && bcc.isEmpty()) {
+            emitNewStateFor(MainEvent.LoadingDismissed)
+            emitNewStateFor(EffectsEvent.ErrorEvent.OnSendMessageError(SendDraftError.InvalidRecipient))
+            return
+        }
+
+        val attachmentsUi = composerStates.value.attachments.uiModel.attachments
+        val attachments = if (attachmentsUi.isEmpty()) {
+            emptyList()
+        } else {
+            runCatching { getExternalIdentityAttachments(primaryUserId(), attachmentsUi) }
+                .getOrElse {
+                    Timber.w(it, "composer: failed to resolve external attachments")
+                    emptyList()
+                }
+        }
+
+        sendMessageViaExternalIdentity(
+            identityId = identity.id,
+            to = to,
+            cc = cc,
+            bcc = bcc,
+            subject = fields.subject.value,
+            htmlBody = fields.bodyFields.body.value,
+            attachments = attachments
+        ).fold(
+            ifLeft = { smtpError ->
+                Timber.w("composer: external SMTP send failed: $smtpError")
+                emitNewStateFor(MainEvent.LoadingDismissed)
+                emitNewStateFor(
+                    EffectsEvent.ErrorEvent.OnSendMessageError(
+                        SendDraftError.BadRequest(smtpError.toUserMessage())
+                    )
+                )
+            },
+            ifRight = {
+                appEventBroadcaster.emit(AppEvent.MessageSent)
+                emitNewStateFor(EffectsEvent.SendEvent.OnSendMessage)
+            }
+        )
+
+        activeExternalIdentity = null
+    }
+
+    private fun List<DraftRecipient>.flattenToSmtpRecipients(): List<SmtpMessageRecipient> =
+        flatMap { recipient ->
+            when (recipient) {
+                is DraftRecipient.GroupRecipient -> recipient.recipients.map {
+                    SmtpMessageRecipient(name = it.name, address = it.address)
+                }
+
+                is DraftRecipient.SingleRecipient -> listOf(
+                    SmtpMessageRecipient(name = recipient.name, address = recipient.address)
+                )
+            }
+        }
+
+    private fun SmtpError.toUserMessage(): String = when (this) {
+        SmtpError.AuthenticationFailed -> "SMTP authentication failed — check username/password"
+        SmtpError.ConnectionFailed -> "Could not reach the SMTP server"
+        SmtpError.TlsFailed -> "TLS negotiation with the SMTP server failed"
+        is SmtpError.Unexpected -> message ?: "SMTP error"
     }
 
     private suspend fun forceDraftSave(fields: DraftFields): Either<SaveDraftError, Unit> = either {
@@ -1001,7 +1128,6 @@ class ComposerViewModel @AssistedInject constructor(
     private fun emitNewStateFor(event: ComposerStateEvent) {
         mutableComposerStates.update { composerStateReducer.reduceNewState(it, event) }
     }
-
     private fun ComposeToAddresses.extractRecipients(): List<RecipientUiModel> {
         return this.recipients.map { recipient ->
             when {

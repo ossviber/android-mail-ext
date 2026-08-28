@@ -28,7 +28,7 @@
             android:name=".debug.DebugActivity"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
-            android:label="PM ET debug">
+            android:label="PM Ext debug">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

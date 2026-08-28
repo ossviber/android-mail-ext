@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">更改图标</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">出错了，请重试。</string>
+    <string name="mail_settings_external_identities">外部身份</string>
 </resources>

@@ -187,6 +187,11 @@ include(":mail-crash-record:dagger")
 include(":mail-crash-record:data")
 include(":mail-crash-record:domain")
 
+include(":mail-extidentities:dagger")
+include(":mail-extidentities:data")
+include(":mail-extidentities:domain")
+include(":mail-extidentities:presentation")
+
 include(":mail-telemetry:dagger")
 include(":mail-telemetry:data")
 include(":mail-telemetry:domain")

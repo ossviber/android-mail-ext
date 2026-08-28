@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Skift ikon</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Der opstod en fejl. Prøv igen.</string>
+    <string name="mail_settings_external_identities">Eksterne identiteter</string>
 </resources>

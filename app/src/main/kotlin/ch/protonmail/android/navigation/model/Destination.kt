@@ -25,6 +25,7 @@ import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekVi
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
+import ch.protonmail.android.extidentities.presentation.ui.EditExternalIdentityScreenKeys
 import ch.protonmail.android.mailcontact.domain.model.ContactGroupId
 import ch.protonmail.android.mailcontact.domain.model.ContactId
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ui.ContactDetailsScreen.CONTACT_DETAILS_ID_KEY
@@ -186,6 +187,17 @@ sealed class Destination(val route: String) {
         object LanguageSettings : Destination("settings/appLanguage")
         object AppIconSettings : Destination("settings/appIcon")
         object ContentSearchSettings : Destination("settings/contentSearch")
+        object ExternalIdentitiesSettings : Destination("settings/externalIdentities")
+        object EditExternalIdentitySettings :
+            Destination(
+                "settings/externalIdentities/edit/{${EditExternalIdentityScreenKeys.IDENTITY_ID_KEY}}"
+            ) {
+
+            operator fun invoke(identityId: Long?) = route.replace(
+                "{${EditExternalIdentityScreenKeys.IDENTITY_ID_KEY}}",
+                identityId?.toString() ?: "0"
+            )
+        }
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
 

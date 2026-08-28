@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Modificare pictogramă</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">A apărut o eroare. Mai încercați.</string>
+    <string name="mail_settings_external_identities">Identități externe</string>
 </resources>

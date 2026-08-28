@@ -88,6 +88,15 @@ android {
                 keyPassword = "android"
             }
         }
+        create("release") {
+            val releaseKeystore = file("$rootDir/keystore/release.keystore")
+            if (releaseKeystore.exists()) {
+                storeFile = releaseKeystore
+                storePassword = "protonmailext"
+                keyAlias = "extrelease"
+                keyPassword = "protonmailext"
+            }
+        }
     }
 
     buildTypes {
@@ -111,7 +120,11 @@ android {
             )
 
             manifestPlaceholders["isFcmServiceEnabled"] = isFcmServiceEnabled
-            signingConfig = signingConfigs["debug"]
+            signingConfig = if (file("$rootDir/keystore/release.keystore").exists()) {
+                signingConfigs["release"]
+            } else {
+                signingConfigs["debug"]
+            }
         }
         create("benchmark") {
             initWith(getByName("release"))
@@ -129,15 +142,13 @@ android {
         create("dev") {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev+$gitHash"
-            buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
+            buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             buildConfigField("Boolean", "DISABLE_SCREEN_SECURITY", "false")
 
-            val protonHost = "proton.black"
-            protonEnvironment {
-                host = protonHost
-                apiPrefix = "mail-api"
-            }
-            setAssetLinksResValue(protonHost)
+            // Inherits the production environment from defaultConfig: the upstream
+            // proton.black test host only resolves inside Proton's network, which
+            // breaks sign-in on devices outside it.
+            setAssetLinksResValue("proton.me")
         }
         create("alpha") {
             applicationIdSuffix = ".alpha"
@@ -179,6 +190,9 @@ android {
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")
         resources.excludes.add("META-INF/gradle/incremental.annotation.processors")
+        // Angus Mail (external identities SMTP) collides with jakarta activation/inject
+        resources.pickFirsts.add("META-INF/NOTICE.md")
+        resources.pickFirsts.add("META-INF/LICENSE.md")
     }
 
     sourceSets {
@@ -237,6 +251,7 @@ dependencies {
     implementation(project(":mail-conversation"))
     implementation(project(":mail-detail"))
     implementation(project(":mail-events"))
+    implementation(project(":mail-extidentities"))
     implementation(project(":mail-featureflags"))
     implementation(project(":mail-label"))
     implementation(project(":mail-category-view:dagger"))

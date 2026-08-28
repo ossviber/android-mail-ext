@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Cambia l\'icona</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprova.</string>
+    <string name="mail_settings_external_identities">Identità esterne</string>
 </resources>

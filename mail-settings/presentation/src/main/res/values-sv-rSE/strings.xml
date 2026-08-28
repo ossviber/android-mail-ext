@@ -153,4 +153,5 @@
   <string name="settings_app_icon_change_icon">Ändra ikon</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ett fel uppstod. Försök igen.</string>
+    <string name="mail_settings_external_identities">Externa identiteter</string>
 </resources>

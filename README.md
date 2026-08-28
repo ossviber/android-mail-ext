@@ -1,57 +1,39 @@
-Proton Mail for Android
-=======================
-Copyright (c) 2026 Proton Technologies AG
+Proton Mail Ext (android-mail-ext)
+=================================
 
-## Contributing
-We’ve recently rebuilt the app and are focused on our current roadmap of features and fixes. Therefore, we are not accepting new issues or PRs at the moment: feel free to fork the repo for your own experiments. We appreciate your understanding and support.
+A fork of [Proton Mail for Android](https://github.com/ProtonMail/android-mail) with
+enhancements for sending from external email identities:
+
+- Send from non-Proton addresses through your own SMTP servers
+- Stored SMTP server configurations shared across identities
+- Sent e-mails are copied into your Proton Sent folder (with optional per-identity
+  labeling and a matching server-side filter)
+- Attachments support for external identities
+
+> **Disclaimer**
+>
+> This project is **not affiliated with, endorsed by, or sponsored by Proton AG** or
+> any of its subsidiaries. "Proton" and "Proton Mail" are trademarks of their
+> respective owners, used here only to describe the upstream project this fork is
+> based on. The software is provided "AS IS" without warranty of any kind; use it
+> entirely at your own risk. The author is not responsible for any loss, damage or
+> misuse arising from the use of this software.
+
+## Signing
+This build is signed with its own debug and release keys (under `keystore/`, which is
+not committed). The package name is `ossviber.protonmail.android`.
 
 ## Build instructions
 - Install and configure the environment (two options available)
   - [Android Studio bundle](https://developer.android.com/studio/install)
   - [Standalone Android tools](https://developer.android.com/tools)
 - Install and configure Java 17+ (not needed for Android Studio bundle as it's included)
-  - Install Java 17 with `brew install openjdk@17` | `apt install openjdk-17-jdk`
-  - Set Java 17 as the current version by using the `JAVA_HOME` environment variable
-- Clone this repository (Use `git clone git@github.com:ProtonMail/android-mail.git`.)
+- Clone this repository
 - Ensure [Git LFS](https://git-lfs.com/) is installed (`git lfs install`) for snapshot test assets
-- Setup `google-services.json` file by running `./scripts/setup_google_services.sh`
+- Setup `google-services.json` file (a local-dev placeholder is committed)
 - Build with any of the following:
   - Execute `./gradlew assembleAlphaDebug` in a terminal
   - Open Android Studio and build the `:app` module
 
-## CI / CD
-CI stages are defined in the `.gitlab-ci.yml` file and we rely on [fastlane](https://docs.fastlane.tools/) to implement most of them.
-Fastlane can be installed and used locally by performing
-```
-bundle install
-```
-(requires Ruby and `bundler` to be available locally)
-```
-bundle exec fastlane lanes
-```
-will show all the possible actions that are available.
-
-## Deploy
-Each merge to `main` branch builds the branch's HEAD and deploys it
-to [Firebase App Distribution](https://firebase.google.com/docs/app-distribution).
-
-## Observability
-
-We use **Sentry** for crash/error reporting (primarily for **non-debuggable** builds).
-
-- **Runtime crash/error reporting**: the DSN is injected at build time via environment variables (`SENTRY_DSN_MAIL` and
-  `SENTRY_DSN_ACCOUNT`). If these variables are not set (typical for local builds and forks), Sentry is effectively
-  disabled.
-- **Mapping/symbol uploads (CI / release tasks)**: CI provides a `sentry.properties` file for uploading ProGuard/R8
-  mappings and native symbols.
-
-## Code style
-
-This project's code style and formatting is checked by detekt. The rule set
-is [ktlint's default one](https://github.com/pinterest/ktlint).
-
-License
--------
-The code and data files in this distribution are licensed under the terms of the GPLv3 as published by the Free Software
-Foundation. See [the GPLv3 license text](https://www.gnu.org/licenses/) for a copy of this license.
-
+## Upstream
+Original repository: https://github.com/ProtonMail/android-mail

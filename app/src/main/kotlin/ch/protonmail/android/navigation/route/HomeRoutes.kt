@@ -294,6 +294,9 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, activ
                     },
                     onContentSearchSettingsClick = {
                         navController.navigate(Destination.Screen.ContentSearchSettings.route)
+                    },
+                    onExternalIdentitiesClick = {
+                        navController.navigate(Destination.Screen.ExternalIdentitiesSettings.route)
                     }
                 )
             )

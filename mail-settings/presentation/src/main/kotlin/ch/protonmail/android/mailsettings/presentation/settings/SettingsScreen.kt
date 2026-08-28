@@ -203,6 +203,12 @@ fun MainSettingsScreen(
                         )
                     }
                     SettingsItemDivider()
+                    ProtonMainSettingsItem(
+                        name = stringResource(id = string.mail_settings_external_identities),
+                        iconRes = R.drawable.ic_proton_magnifier,
+                        onClick = actions.onExternalIdentitiesClick
+                    )
+                    SettingsItemDivider()
                 }
             }
             Spacer(Modifier.padding(vertical = ProtonDimens.Spacing.Large))
@@ -333,6 +339,7 @@ object MainSettingsScreen {
         val onAccountStorageClicked: () -> Unit,
         val onSignatureClicked: () -> Unit,
         val onContentSearchSettingsClick: () -> Unit,
+        val onExternalIdentitiesClick: () -> Unit = {},
         val onBackClick: () -> Unit
     )
 }
