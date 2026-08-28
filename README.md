@@ -6,9 +6,17 @@ enhancements for sending from external email identities:
 
 - Send from non-Proton addresses through your own SMTP servers
 - Stored SMTP server configurations shared across identities
-- Sent e-mails are copied into your Proton Sent folder (with optional per-identity
-  labeling and a matching server-side filter)
+- Sent e-mails are copied into your Proton Sent folder
 - Attachments support for external identities
+
+> **Current status**
+>
+> The sent-copy automation (per-identity labeling and its server-side filter) is
+> currently **dormant**: its UI was removed from the app, but the underlying
+> functions remain in the codebase for a future re-enable. Push notifications via
+> Google (GMS/FCM) are not available in this fork: the upstream Firebase API key
+> is restricted to the official package name and signing certificate, so this
+> re-signed build cannot obtain an FCM token.
 
 > **How this fork was made**
 >
@@ -39,8 +47,13 @@ not committed). The package name is `ossviber.protonmail.android`.
 - Ensure [Git LFS](https://git-lfs.com/) is installed (`git lfs install`) for snapshot test assets
 - Setup `google-services.json` file (a local-dev placeholder is committed)
 - Build with any of the following:
-  - Execute `./gradlew assembleAlphaDebug` in a terminal
+  - Debug: `./gradlew assembleDevDebug` in a terminal
+  - Release: `./gradlew assembleProdRelease -x uploadSentryProguardMappingsProdRelease -x uploadSentryNativeSymbolsForProdRelease`
   - Open Android Studio and build the `:app` module
+
+## Releases
+Pre-built release APKs are published on the
+[releases page](https://github.com/ossviber/android-mail-ext/releases).
 
 ## Upstream
 Original repository: https://github.com/ProtonMail/android-mail
