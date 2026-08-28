@@ -81,4 +81,9 @@ Afegeix-ne una per enviar correus des d\'un altre proveïdor a través del seu p
     <string name="ext_identities_server_config_delete_title">Voleu eliminar la configuració del servidor?</string>
     <string name="ext_identities_server_config_delete_message">Les identitats que utilitzen %1$s deixaran de funcionar fins que se\'ls assigni una altra configuració de servidor.</string>
     <string name="ext_identities_server_config_in_use">Utilitzada per %1$d identitat(es)</string>
+    <string name="ext_identities_enabled_hint">Quan està activada, aquesta identitat s\'ofereix com a remitent en redactar. Desactiveu-la per amagar-la sense eliminar-la.</string>
+    <string name="ext_identities_apply_label_button">Afegir l\'etiqueta als correus enviats existents</string>
+    <string name="ext_identities_remove_label_button">Treure l\'etiqueta dels correus enviats</string>
+    <string name="ext_identities_label_apply_done">Fet</string>
+    <string name="ext_identities_add_identity_needs_server">Afegiu primer una configuració de servidor SMTP per poder afegir identitats.</string>
 </resources>

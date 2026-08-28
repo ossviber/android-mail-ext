@@ -81,4 +81,9 @@ Dodajte identiteto za pošiljanje e-pošte z naslova drugega ponudnika prek njeg
     <string name="ext_identities_server_config_delete_title">Izbrišem konfiguracijo strežnika?</string>
     <string name="ext_identities_server_config_delete_message">Identitete, ki uporabljajo %1$s, bodo prenehale delovati, dokler jim ne bo dodeljena druga konfiguracija strežnika.</string>
     <string name="ext_identities_server_config_in_use">V uporabi pri %1$d identitetah</string>
+    <string name="ext_identities_enabled_hint">Ko je omogočeno, se ta identiteta ponudi kot pošiljatelj pri pisanju. Onemogočite, da jo skrijete brez brisanja.</string>
+    <string name="ext_identities_apply_label_button">Dodaj oznako obstoječim poslanim e-poštnim sporočilom</string>
+    <string name="ext_identities_remove_label_button">Odstrani oznako iz poslanih e-poštnih sporočil</string>
+    <string name="ext_identities_label_apply_done">Končano</string>
+    <string name="ext_identities_add_identity_needs_server">Najprej dodajte konfiguracijo strežnika SMTP, da omogočite dodajanje identitet.</string>
 </resources>

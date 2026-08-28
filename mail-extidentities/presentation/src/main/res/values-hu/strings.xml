@@ -81,4 +81,9 @@ Adjon hozzá egyet, hogy egy másik szolgáltatótól küldhessen leveleket a sa
     <string name="ext_identities_server_config_delete_title">Szerverkonfiguráció törlése?</string>
     <string name="ext_identities_server_config_delete_message">A(z) %1$s szolgáltatást használó identitások addig nem működnek, amíg másik szerverkonfigurációt nem rendelnek hozzájuk.</string>
     <string name="ext_identities_server_config_in_use">%1$d identitás használja</string>
+    <string name="ext_identities_enabled_hint">Ha engedélyezve van, ez az identitás feladóként jelenik meg íráskor. A törlés nélküli elrejtéshez kapcsolja ki.</string>
+    <string name="ext_identities_apply_label_button">Címke hozzáadása a meglévő elküldött e-mailekhez</string>
+    <string name="ext_identities_remove_label_button">Címke eltávolítása az elküldött e-mailekről</string>
+    <string name="ext_identities_label_apply_done">Kész</string>
+    <string name="ext_identities_add_identity_needs_server">Először adjon hozzá egy SMTP-szerverkonfigurációt az identitások hozzáadásához.</string>
 </resources>

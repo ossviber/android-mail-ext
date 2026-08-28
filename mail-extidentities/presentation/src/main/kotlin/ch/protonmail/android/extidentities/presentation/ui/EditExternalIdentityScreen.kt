@@ -108,7 +108,8 @@ fun EditExternalIdentityScreen(
                 onSave = { viewModel.save(onDone = onBackClick) },
                 onDeleteRequested = { showDeleteDialog = true },
                 onEnableAutomation = viewModel::enableSentAutomation,
-                onDisableAutomation = viewModel::disableSentAutomation
+                onDisableAutomation = viewModel::disableSentAutomation,
+                onApplyLabel = viewModel::applyLabelToExisting
             )
         }
     )
@@ -153,7 +154,8 @@ private fun EditExternalIdentityContent(
     onSave: () -> Unit,
     onDeleteRequested: () -> Unit,
     onEnableAutomation: () -> Unit,
-    onDisableAutomation: () -> Unit
+    onDisableAutomation: () -> Unit,
+    onApplyLabel: (Boolean) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     var showPassword by remember { mutableStateOf(false) }
@@ -232,11 +234,17 @@ private fun EditExternalIdentityContent(
                 onCheckedChange = { checked -> onUpdate { it.copy(isEnabled = checked) } }
             )
         }
+        Text(
+            text = stringResource(R.string.ext_identities_enabled_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = ProtonTheme.colors.textWeak
+        )
 
         SentCopyAutomationCard(
             state = state,
             onEnable = onEnableAutomation,
-            onDisable = onDisableAutomation
+            onDisable = onDisableAutomation,
+            onApplyLabel = onApplyLabel
         )
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
@@ -415,7 +423,8 @@ private fun EditExternalIdentityContent(
 private fun SentCopyAutomationCard(
     state: EditExternalIdentityState,
     onEnable: () -> Unit,
-    onDisable: () -> Unit
+    onDisable: () -> Unit,
+    onApplyLabel: (Boolean) -> Unit
 ) {
     val enabled = state.sentLabelId != null
 
@@ -482,6 +491,36 @@ private fun SentCopyAutomationCard(
             text = stringResource(R.string.ext_identities_automation_failed),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.error
+        )
+    }
+
+    // Filter-rule button: with the automation active it labels every existing
+    // sent e-mail; with the automation off it removes the label again.
+    OutlinedButton(
+        onClick = { onApplyLabel(enabled) },
+        enabled = !state.isSettingUpAutomation && !state.isApplyingLabel &&
+            state.sentLabelId != null,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        if (state.isApplyingLabel) {
+            CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
+            Spacer(modifier = Modifier.size(8.dp))
+        }
+        Text(
+            stringResource(
+                if (enabled) {
+                    R.string.ext_identities_apply_label_button
+                } else {
+                    R.string.ext_identities_remove_label_button
+                }
+            )
+        )
+    }
+    if (state.labelApplyDone) {
+        Text(
+            text = stringResource(R.string.ext_identities_label_apply_done),
+            style = MaterialTheme.typography.bodySmall,
+            color = ProtonTheme.colors.textWeak
         )
     }
 }

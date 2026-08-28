@@ -81,4 +81,9 @@
     <string name="ext_identities_server_config_delete_title">刪除伺服器設定？</string>
     <string name="ext_identities_server_config_delete_message">使用 %1$s 的身分將停止運作，直到為其指派另一個伺服器設定。</string>
     <string name="ext_identities_server_config_in_use">被 %1$d 個身分使用</string>
+    <string name="ext_identities_enabled_hint">啟用後，此身分在撰寫郵件時作為寄件者提供。停用以隱藏它而不刪除。</string>
+    <string name="ext_identities_apply_label_button">將標籤新增到現有已寄郵件</string>
+    <string name="ext_identities_remove_label_button">從已寄郵件中移除標籤</string>
+    <string name="ext_identities_label_apply_done">完成</string>
+    <string name="ext_identities_add_identity_needs_server">請先新增 SMTP 伺服器設定以啟用新增身分。</string>
 </resources>

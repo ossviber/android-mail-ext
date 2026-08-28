@@ -81,4 +81,9 @@ Přidejte identitu pro odesílání e-mailů od jiného poskytovatele přes jeho
     <string name="ext_identities_server_config_delete_title">Odstranit konfiguraci serveru?</string>
     <string name="ext_identities_server_config_delete_message">Identity používající %1$s přestanou fungovat, dokud jim nebude přiřazena jiná konfigurace serveru.</string>
     <string name="ext_identities_server_config_in_use">Používá se v %1$d identitách</string>
+    <string name="ext_identities_enabled_hint">Pokud je zapnuto, je tato identita nabízena jako odesílatel při psaní. Vypněte, abyste ji skryli bez smazání.</string>
+    <string name="ext_identities_apply_label_button">Přidat štítek k existujícím odeslaným e-mailům</string>
+    <string name="ext_identities_remove_label_button">Odebrat štítek z odeslaných e-mailů</string>
+    <string name="ext_identities_label_apply_done">Hotovo</string>
+    <string name="ext_identities_add_identity_needs_server">Nejprve přidejte konfiguraci SMTP serveru, abyste mohli přidávat identity.</string>
 </resources>

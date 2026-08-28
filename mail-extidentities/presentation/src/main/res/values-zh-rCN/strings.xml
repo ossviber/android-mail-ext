@@ -81,4 +81,9 @@
     <string name="ext_identities_server_config_delete_title">删除服务器配置？</string>
     <string name="ext_identities_server_config_delete_message">使用 %1$s 的身份将停止工作，直到为其分配另一个服务器配置。</string>
     <string name="ext_identities_server_config_in_use">被 %1$d 个身份使用</string>
+    <string name="ext_identities_enabled_hint">启用后，此身份在撰写邮件时作为发件人提供。禁用以隐藏它而不删除。</string>
+    <string name="ext_identities_apply_label_button">将标签添加到现有已发送邮件</string>
+    <string name="ext_identities_remove_label_button">从已发送邮件中移除标签</string>
+    <string name="ext_identities_label_apply_done">完成</string>
+    <string name="ext_identities_add_identity_needs_server">请先添加 SMTP 服务器配置以启用添加身份。</string>
 </resources>

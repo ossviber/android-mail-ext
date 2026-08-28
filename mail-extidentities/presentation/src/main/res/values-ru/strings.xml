@@ -81,4 +81,9 @@
     <string name="ext_identities_server_config_delete_title">Удалить конфигурацию сервера?</string>
     <string name="ext_identities_server_config_delete_message">Личности, использующие %1$s, перестанут работать, пока им не будет назначена другая конфигурация сервера.</string>
     <string name="ext_identities_server_config_in_use">Используется в %1$d личностях</string>
+    <string name="ext_identities_enabled_hint">Если включено, эта личность предлагается как отправитель при создании письма. Отключите, чтобы скрыть её без удаления.</string>
+    <string name="ext_identities_apply_label_button">Добавить метку к существующим отправленным письмам</string>
+    <string name="ext_identities_remove_label_button">Удалить метку из отправленных писем</string>
+    <string name="ext_identities_label_apply_done">Готово</string>
+    <string name="ext_identities_add_identity_needs_server">Сначала добавьте конфигурацию SMTP-сервера, чтобы включить добавление личностей.</string>
 </resources>

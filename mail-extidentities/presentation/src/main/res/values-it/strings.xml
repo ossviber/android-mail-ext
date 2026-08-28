@@ -81,4 +81,9 @@ Aggiungine una per inviare email da un altro provider tramite il suo server SMTP
     <string name="ext_identities_server_config_delete_title">Eliminare la configurazione del server?</string>
     <string name="ext_identities_server_config_delete_message">Le identità che usano %1$s smetteranno di funzionare finché non verrà assegnata loro un\'altra configurazione del server.</string>
     <string name="ext_identities_server_config_in_use">Usata da %1$d identità</string>
+    <string name="ext_identities_enabled_hint">Se attivata, questa identità viene offerta come mittente durante la composizione. Disattivala per nasconderla senza eliminarla.</string>
+    <string name="ext_identities_apply_label_button">Applica l\'etichetta alle e-mail inviate esistenti</string>
+    <string name="ext_identities_remove_label_button">Rimuovi l\'etichetta dalle e-mail inviate</string>
+    <string name="ext_identities_label_apply_done">Fatto</string>
+    <string name="ext_identities_add_identity_needs_server">Aggiungi prima una configurazione del server SMTP per poter aggiungere identità.</string>
 </resources>

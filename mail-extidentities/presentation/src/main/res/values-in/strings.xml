@@ -80,4 +80,9 @@ Tambahkan satu untuk mengirim email dari penyedia lain melalui server SMTP milik
     <string name="ext_identities_server_config_delete_title">Hapus konfigurasi server?</string>
     <string name="ext_identities_server_config_delete_message">Identitas yang memakai %1$s akan berhenti berfungsi sampai diberi konfigurasi server lain.</string>
     <string name="ext_identities_server_config_in_use">Digunakan oleh %1$d identitas</string>
+    <string name="ext_identities_enabled_hint">Saat diaktifkan, identitas ini ditawarkan sebagai pengirim saat menulis. Nonaktifkan untuk menyembunyikannya tanpa menghapus.</string>
+    <string name="ext_identities_apply_label_button">Tambahkan label ke email terkirim yang ada</string>
+    <string name="ext_identities_remove_label_button">Hapus label dari email terkirim</string>
+    <string name="ext_identities_label_apply_done">Selesai</string>
+    <string name="ext_identities_add_identity_needs_server">Tambahkan konfigurasi server SMTP terlebih dahulu untuk mengaktifkan penambahan identitas.</string>
 </resources>

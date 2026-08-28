@@ -81,4 +81,9 @@
     <string name="ext_identities_server_config_delete_title">サーバー設定を削除しますか？</string>
     <string name="ext_identities_server_config_delete_message">%1$s を使用しているアイデンティティは、別のサーバー設定が割り当てられるまで動作しなくなります。</string>
     <string name="ext_identities_server_config_in_use">%1$d 個のアイデンティティで使用中</string>
+    <string name="ext_identities_enabled_hint">有効にすると、このIDは作成時に送信者として提供されます。削除せずに非表示にするには無効にします。</string>
+    <string name="ext_identities_apply_label_button">既存の送信メールにラベルを追加</string>
+    <string name="ext_identities_remove_label_button">送信メールからラベルを削除</string>
+    <string name="ext_identities_label_apply_done">完了</string>
+    <string name="ext_identities_add_identity_needs_server">IDを追加するには、まずSMTPサーバー設定を追加してください。</string>
 </resources>

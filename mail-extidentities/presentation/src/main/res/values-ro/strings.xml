@@ -81,4 +81,9 @@ Adăugați una pentru a trimite e-mailuri de la un alt furnizor prin propriul s�
     <string name="ext_identities_server_config_delete_title">Ștergeți configurația serverului?</string>
     <string name="ext_identities_server_config_delete_message">Identitățile care folosesc %1$s nu vor mai funcționa până când li se atribuie o altă configurație de server.</string>
     <string name="ext_identities_server_config_in_use">Folosită de %1$d identități</string>
+    <string name="ext_identities_enabled_hint">Când este activată, această identitate este oferită ca expeditor la redactare. Dezactivați pentru a o ascunde fără a o șterge.</string>
+    <string name="ext_identities_apply_label_button">Adăugați eticheta la e-mailurile trimise existente</string>
+    <string name="ext_identities_remove_label_button">Eliminați eticheta din e-mailurile trimise</string>
+    <string name="ext_identities_label_apply_done">Gata</string>
+    <string name="ext_identities_add_identity_needs_server">Adăugați mai întâi o configurație de server SMTP pentru a activa adăugarea identităților.</string>
 </resources>

@@ -81,4 +81,9 @@
     <string name="ext_identities_server_config_delete_title">Выдаліць канфігурацыю сервера?</string>
     <string name="ext_identities_server_config_delete_message">Асобы, якія выкарыстоўваюць %1$s, перастануць працаваць, пакуль ім не будзе прызначана іншая канфігурацыя сервера.</string>
     <string name="ext_identities_server_config_in_use">Выкарыстоўваецца ў %1$d асоб.</string>
+    <string name="ext_identities_enabled_hint">Калі ўключана, гэтая асоба прапануецца як адпраўнік пры стварэнні ліста. Адключыце, каб схаваць яе без выдалення.</string>
+    <string name="ext_identities_apply_label_button">Дадаць метку да існуючых адпраўленых лістоў</string>
+    <string name="ext_identities_remove_label_button">Выдаліць метку з адпраўленых лістоў</string>
+    <string name="ext_identities_label_apply_done">Гатова</string>
+    <string name="ext_identities_add_identity_needs_server">Спачатку дадайце канфігурацыю SMTP-сервера, каб уключыць даданне асоб.</string>
 </resources>

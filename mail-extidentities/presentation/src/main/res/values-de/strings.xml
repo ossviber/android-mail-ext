@@ -80,4 +80,9 @@ Füge eine hinzu, um E-Mails von einem anderen Anbieter über dessen eigenen SMT
     <string name="ext_identities_server_config_delete_title">Serverkonfiguration löschen?</string>
     <string name="ext_identities_server_config_delete_message">Identitäten, die %1$s verwenden, funktionieren nicht mehr, bis ihnen eine andere Serverkonfiguration zugewiesen wird.</string>
     <string name="ext_identities_server_config_in_use">Wird von %1$d Identitäten verwendet</string>
+    <string name="ext_identities_enabled_hint">Ist diese Option aktiviert, wird die Identität beim Verfassen als Absender angeboten. Deaktivieren, um sie auszublenden, ohne sie zu löschen.</string>
+    <string name="ext_identities_apply_label_button">Label auf vorhandene gesendete E-Mails anwenden</string>
+    <string name="ext_identities_remove_label_button">Label von gesendeten E-Mails entfernen</string>
+    <string name="ext_identities_label_apply_done">Fertig</string>
+    <string name="ext_identities_add_identity_needs_server">Fügen Sie zuerst eine SMTP-Serverkonfiguration hinzu, um Identitäten anlegen zu können.</string>
 </resources>

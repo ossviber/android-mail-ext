@@ -87,4 +87,15 @@ interface ExternalIdentityRepository {
 
     /** Persists the Proton filter id driving the automation (null clears it). */
     suspend fun setSentFilterId(identityId: ExternalIdentityId, filterId: String?)
+
+    /**
+     * Applies or removes the identity's sent label on the already stored sent
+     * e-mails. [apply] = true labels every message in the Sent location with
+     * the identity label; false removes the label from every message carrying it.
+     */
+    suspend fun applySentLabelToExisting(
+        userId: UserId,
+        identityId: ExternalIdentityId,
+        apply: Boolean
+    ): Either<ExternalIdentitiesError, Unit>
 }

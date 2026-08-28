@@ -81,4 +81,9 @@
     <string name="ext_identities_server_config_delete_title">Видалити конфігурацію сервера?</string>
     <string name="ext_identities_server_config_delete_message">Особи, які використовують %1$s, перестануть працювати, доки їм не буде призначено іншу конфігурацію сервера.</string>
     <string name="ext_identities_server_config_in_use">Використовується в %1$d осіб</string>
+    <string name="ext_identities_enabled_hint">Якщо увімкнено, ця особа пропонується як відправник під час створення листа. Вимкніть, щоб приховати її без видалення.</string>
+    <string name="ext_identities_apply_label_button">Додати мітку до наявних надісланих листів</string>
+    <string name="ext_identities_remove_label_button">Видалити мітку з надісланих листів</string>
+    <string name="ext_identities_label_apply_done">Готово</string>
+    <string name="ext_identities_add_identity_needs_server">Спочатку додайте конфігурацію SMTP-сервера, щоб увімкнути додавання осіб.</string>
 </resources>

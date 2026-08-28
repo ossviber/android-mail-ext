@@ -151,11 +151,20 @@ private fun ExternalIdentitiesContent(
         }
         Button(
             onClick = onAddClick,
+            enabled = serverConfigs.isNotEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
             Text(stringResource(R.string.ext_identities_add_button))
+        }
+        if (serverConfigs.isEmpty()) {
+            Text(
+                text = stringResource(R.string.ext_identities_add_identity_needs_server),
+                style = MaterialTheme.typography.bodySmall,
+                color = ProtonTheme.colors.textWeak,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
         }
 
         HorizontalDivider()

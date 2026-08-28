@@ -81,4 +81,9 @@
     <string name="ext_identities_server_config_delete_title">Διαγραφή διαμόρφωσης διακομιστή;</string>
     <string name="ext_identities_server_config_delete_message">Οι ταυτότητες που χρησιμοποιούν %1$s θα σταματήσουν να λειτουργούν έως ότου τους ανατεθεί άλλη διαμόρφωση διακομιστή.</string>
     <string name="ext_identities_server_config_in_use">Χρησιμοποιείται από %1$d ταυτότητες</string>
+    <string name="ext_identities_enabled_hint">Όταν είναι ενεργοποιημένη, αυτή η ταυτότητα προσφέρεται ως αποστολέας κατά τη σύνταξη. Απενεργοποιήστε για να την αποκρύψετε χωρίς διαγραφή.</string>
+    <string name="ext_identities_apply_label_button">Προσθήκη ετικέτας σε υπάρχοντα απεσταλμένα email</string>
+    <string name="ext_identities_remove_label_button">Αφαίρεση ετικέτας από απεσταλμένα email</string>
+    <string name="ext_identities_label_apply_done">Έτοιμο</string>
+    <string name="ext_identities_add_identity_needs_server">Προσθέστε πρώτα μια διαμόρφωση διακομιστή SMTP για να ενεργοποιήσετε την προσθήκη ταυτοτήτων.</string>
 </resources>

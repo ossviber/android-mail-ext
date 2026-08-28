@@ -81,4 +81,9 @@ Ajoutez-en une pour envoyer des messages depuis un autre fournisseur via son pro
     <string name="ext_identities_server_config_delete_title">Supprimer la configuration du serveur ?</string>
     <string name="ext_identities_server_config_delete_message">Les identités utilisant %1$s cesseront de fonctionner jusqu\'à ce qu\'une autre configuration de serveur leur soit attribuée.</string>
     <string name="ext_identities_server_config_in_use">Utilisée par %1$d identités</string>
+    <string name="ext_identities_enabled_hint">Si cette option est activée, l\'identité est proposée comme expéditeur lors de la rédaction. Désactivez-la pour la masquer sans la supprimer.</string>
+    <string name="ext_identities_apply_label_button">Appliquer le libellé aux e-mails envoyés existants</string>
+    <string name="ext_identities_remove_label_button">Retirer le libellé des e-mails envoyés</string>
+    <string name="ext_identities_label_apply_done">Terminé</string>
+    <string name="ext_identities_add_identity_needs_server">Ajoutez d\'abord une configuration de serveur SMTP pour pouvoir ajouter des identités.</string>
 </resources>

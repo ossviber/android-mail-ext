@@ -85,7 +85,10 @@ data class EditExternalIdentityState(
     val isSettingUpAutomation: Boolean = false,
     val automationFailed: Boolean = false,
     // true when the automation could not run because no Proton session exists.
-    val needsProtonSession: Boolean = false
+    val needsProtonSession: Boolean = false,
+    // Bulk label apply/remove on existing sent e-mails.
+    val isApplyingLabel: Boolean = false,
+    val labelApplyDone: Boolean = false
 ) {
 
     // Auth requirement comes from the selected stored server configuration.

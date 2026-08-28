@@ -81,4 +81,9 @@ Adicione uma para enviar e-mails de outro provedor pelo próprio servidor SMTP.<
     <string name="ext_identities_server_config_delete_title">Excluir configuração do servidor?</string>
     <string name="ext_identities_server_config_delete_message">Identidades que usam %1$s deixarão de funcionar até que recebam outra configuração de servidor.</string>
     <string name="ext_identities_server_config_in_use">Usada por %1$d identidades</string>
+    <string name="ext_identities_enabled_hint">Quando ativada, esta identidade é oferecida como remetente ao compor. Desative para ocultá-la sem excluí-la.</string>
+    <string name="ext_identities_apply_label_button">Adicionar rótulo aos e-mails enviados existentes</string>
+    <string name="ext_identities_remove_label_button">Remover rótulo dos e-mails enviados</string>
+    <string name="ext_identities_label_apply_done">Concluído</string>
+    <string name="ext_identities_add_identity_needs_server">Adicione uma configuração de servidor SMTP primeiro para habilitar a adição de identidades.</string>
 </resources>

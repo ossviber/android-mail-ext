@@ -81,4 +81,9 @@ Add one to send mail from another provider through its own SMTP server.</string>
     <string name="ext_identities_server_config_delete_title">Delete server configuration?</string>
     <string name="ext_identities_server_config_delete_message">Identities using %1$s will stop working until they are reassigned to another server configuration.</string>
     <string name="ext_identities_server_config_in_use">In use by %1$d identities</string>
+    <string name="ext_identities_enabled_hint">When enabled, this identity is offered as a sender when composing. Disable it to hide it without deleting it.</string>
+    <string name="ext_identities_apply_label_button">Add label to existing sent e-mails</string>
+    <string name="ext_identities_remove_label_button">Remove label from sent e-mails</string>
+    <string name="ext_identities_label_apply_done">Done</string>
+    <string name="ext_identities_add_identity_needs_server">Add an SMTP server configuration first to enable adding identities.</string>
 </resources>

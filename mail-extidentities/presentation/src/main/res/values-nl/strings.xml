@@ -80,4 +80,9 @@ Voeg er een toe om e-mail te versturen vanaf een andere provider via diens eigen
     <string name="ext_identities_server_config_delete_title">Serverconfiguratie verwijderen?</string>
     <string name="ext_identities_server_config_delete_message">Identiteiten die %1$s gebruiken, stoppen met werken totdat ze een andere serverconfiguratie toegewezen krijgen.</string>
     <string name="ext_identities_server_config_in_use">Gebruikt door %1$d identiteiten</string>
+    <string name="ext_identities_enabled_hint">Wanneer ingeschakeld wordt deze identiteit als afzender aangeboden bij het opstellen. Schakel uit om te verbergen zonder te verwijderen.</string>
+    <string name="ext_identities_apply_label_button">Label toevoegen aan bestaande verzonden e-mails</string>
+    <string name="ext_identities_remove_label_button">Label verwijderen van verzonden e-mails</string>
+    <string name="ext_identities_label_apply_done">Klaar</string>
+    <string name="ext_identities_add_identity_needs_server">Voeg eerst een SMTP-serverconfiguratie toe om identiteiten te kunnen toevoegen.</string>
 </resources>

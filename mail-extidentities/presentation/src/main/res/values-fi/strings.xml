@@ -80,4 +80,9 @@ Lisää yksi, jotta voit lähettää sähköpostia muulta palveluntarjoajalta se
     <string name="ext_identities_server_config_delete_title">Poistetaanko palvelimen asetukset?</string>
     <string name="ext_identities_server_config_delete_message">Identiteetit, jotka käyttävät palvelua %1$s, lakkaavat toimimasta, kunnes niille määritetään toinen palvelimen asetus.</string>
     <string name="ext_identities_server_config_in_use">Käytössä %1$d identiteetissä</string>
+    <string name="ext_identities_enabled_hint">Kun käytössä, tämä identiteetti tarjotaan lähettäjänä viestiä kirjoitettaessa. Poista käytöstä piilottaaksesi sen poistamatta.</string>
+    <string name="ext_identities_apply_label_button">Lisää tunniste olemassa oleviin lähetettyihin sähköposteihin</string>
+    <string name="ext_identities_remove_label_button">Poista tunniste lähetetyistä sähköposteista</string>
+    <string name="ext_identities_label_apply_done">Valmis</string>
+    <string name="ext_identities_add_identity_needs_server">Lisää ensin SMTP-palvelimen asetus, jotta identiteettejä voi lisätä.</string>
 </resources>

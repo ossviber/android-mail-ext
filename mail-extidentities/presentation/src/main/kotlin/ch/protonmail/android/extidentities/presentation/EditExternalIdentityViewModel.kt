@@ -37,6 +37,7 @@ import ch.protonmail.android.extidentities.domain.usecase.TestSmtpConnection
 import ch.protonmail.android.extidentities.domain.buildSentCopySieveRule
 import ch.protonmail.android.extidentities.domain.sentLabelNameFor
 import ch.protonmail.android.extidentities.presentation.R
+import ch.protonmail.android.extidentities.domain.repository.ExternalIdentityRepository
 import ch.protonmail.android.extidentities.domain.repository.ProtonSessionRepository
 import ch.protonmail.android.mailsession.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsession.domain.usecase.ObserveUser
@@ -63,7 +64,8 @@ class EditExternalIdentityViewModel @Inject constructor(
     private val observeUser: ObserveUser,
     @ApplicationContext private val appContext: Context,
     private val protonSessionRepository: ProtonSessionRepository,
-    private val observeSmtpServerConfigs: ObserveSmtpServerConfigs
+    private val observeSmtpServerConfigs: ObserveSmtpServerConfigs,
+    private val externalIdentityRepository: ExternalIdentityRepository
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow(EditExternalIdentityState())
@@ -278,6 +280,35 @@ class EditExternalIdentityViewModel @Inject constructor(
                     }
                 }
             )
+        }
+    }
+
+    /**
+     * Applies (or removes, when [apply] is false) the identity's sent label on
+     * the e-mails already stored in Proton. Only meaningful when the automation
+     * is active.
+     */
+    fun applyLabelToExisting(apply: Boolean) {
+        val current = mutableState.value
+        if (current.isApplyingLabel || current.isSettingUpAutomation) return
+        if (editingIdentityId <= 0L) return
+        if (apply && current.sentLabelId == null) return
+        mutableState.update { it.copy(isApplyingLabel = true, labelApplyDone = false) }
+        viewModelScope.launch {
+            val userId = observePrimaryUserId().filterNotNull().first()
+            if (userId != null) {
+                externalIdentityRepository.applySentLabelToExisting(
+                    userId,
+                    ExternalIdentityId(editingIdentityId),
+                    apply
+                ).fold(
+                    ifLeft = { error ->
+                        Timber.w("ext-identities: apply label failed: $error")
+                    },
+                    ifRight = { }
+                )
+            }
+            mutableState.update { it.copy(isApplyingLabel = false, labelApplyDone = true) }
         }
     }
 

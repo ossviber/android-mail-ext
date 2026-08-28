@@ -81,4 +81,9 @@ Dodaj tożsamość, aby wysyłać wiadomości z adresu innego dostawcy za pośre
     <string name="ext_identities_server_config_delete_title">Usunąć konfigurację serwera?</string>
     <string name="ext_identities_server_config_delete_message">Tożsamości korzystające z %1$s przestaną działać, dopóki nie zostanie im przypisana inna konfiguracja serwera.</string>
     <string name="ext_identities_server_config_in_use">Używana przez %1$d tożsamości</string>
+    <string name="ext_identities_enabled_hint">Gdy włączona, ta tożsamość jest oferowana jako nadawca podczas tworzenia wiadomości. Wyłącz, aby ją ukryć bez usuwania.</string>
+    <string name="ext_identities_apply_label_button">Dodaj etykietę do istniejących wysłanych wiadomości</string>
+    <string name="ext_identities_remove_label_button">Usuń etykietę z wysłanych wiadomości</string>
+    <string name="ext_identities_label_apply_done">Gotowe</string>
+    <string name="ext_identities_add_identity_needs_server">Najpierw dodaj konfigurację serwera SMTP, aby umożliwić dodawanie tożsamości.</string>
 </resources>

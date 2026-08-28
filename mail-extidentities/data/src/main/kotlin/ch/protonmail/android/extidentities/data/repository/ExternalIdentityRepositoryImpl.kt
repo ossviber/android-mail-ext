@@ -28,6 +28,9 @@ import ch.protonmail.android.extidentities.data.mapper.toDomain
 import ch.protonmail.android.extidentities.data.mapper.toEntity
 import ch.protonmail.android.extidentities.data.mapper.toExternalIdentity
 import ch.protonmail.android.extidentities.domain.StoredSmtpServerConfig
+import ch.protonmail.android.maillabel.domain.model.LabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.extidentities.domain.ExternalIdentitiesError
 import ch.protonmail.android.extidentities.domain.ExternalIdentity
 import ch.protonmail.android.extidentities.domain.ExternalIdentityId
@@ -58,7 +61,8 @@ class ExternalIdentityRepositoryImpl @Inject constructor(
     private val localDataSource: ExternalIdentitiesLocalDataSource,
     private val executeWithUserSession: ExecuteWithUserSession,
     private val labelRepository: LabelRepository,
-    private val protonSessionManager: ProtonSessionManager
+    private val protonSessionManager: ProtonSessionManager,
+    private val messageRepository: MessageRepository
 ) : ExternalIdentityRepository {
 
     private val setupMutex = Mutex()
@@ -191,6 +195,62 @@ class ExternalIdentityRepositoryImpl @Inject constructor(
         localDataSource.setSentFilterId(identityId.value, filterId)
     }
 
+    override suspend fun applySentLabelToExisting(
+        userId: UserId,
+        identityId: ExternalIdentityId,
+        apply: Boolean
+    ): Either<ExternalIdentitiesError, Unit> {
+        val labelId = localDataSource.findById(identityId.value)?.sentLabelId
+            ?: return Unit.right()
+        return Either.catch {
+        val targetLabel = if (apply) {
+            SystemLabelId.AllSent.labelId
+        } else {
+            LabelId(labelId)
+        }
+        // Iterate the messages under the source label in batches and apply/remove
+        // the identity label. Bounded loop guards against pathological accounts.
+        val allIds = mutableListOf<ch.protonmail.android.mailmessage.domain.model.MessageId>()
+        repeat(MAX_LABEL_BATCHES) {
+            val page = messageRepository.getMessages(
+                userId,
+                ch.protonmail.android.mailpagination.domain.model.PageKey.DefaultPageKey(labelId = targetLabel)
+            ).fold(
+                ifLeft = { error ->
+                    Timber.w("ext-identities: label batch load failed: " + error)
+                    emptyList()
+                },
+                ifRight = { it }
+            )
+            if (page.isEmpty()) return@repeat
+            val ids = page.map { it.messageId }
+            val newIds = ids.filter { id -> allIds.none { it.id == id.id } }
+            if (newIds.isEmpty()) return@repeat
+            allIds += newIds
+            if (allIds.size >= MAX_LABEL_MESSAGES) return@repeat
+        }
+        if (allIds.isNotEmpty()) {
+            val selected = if (apply) listOf(LabelId(labelId)) else emptyList()
+            val partially = if (apply) emptyList() else listOf(LabelId(labelId))
+            messageRepository.labelAs(
+                userId = userId,
+                messageIds = allIds,
+                selectedLabels = selected,
+                partiallySelectedLabels = partially,
+                shouldArchive = false
+            ).fold(
+                ifLeft = { error ->
+                    Timber.w("ext-identities: label bulk apply failed: " + error)
+                },
+                ifRight = { }
+            )
+        }
+        }.mapLeft {
+            Timber.e(it, "ext-identities: failed to apply sent label")
+            ExternalIdentitiesError.StorageFailure(it.message)
+        }
+    }
+
     override fun observeServerConfigs(): Flow<List<StoredSmtpServerConfig>> =
         localDataSource.observeServerConfigs().map { entities ->
             entities.map { it.toDomain() }
@@ -218,5 +278,7 @@ class ExternalIdentityRepositoryImpl @Inject constructor(
         const val FOLDER_RESOLVE_ATTEMPTS = 5
         const val FOLDER_RESOLVE_DELAY_MS = 600L
         const val POLL_TIMEOUT_MS = 5000L
+        const val MAX_LABEL_BATCHES = 20
+        const val MAX_LABEL_MESSAGES = 500
     }
 }

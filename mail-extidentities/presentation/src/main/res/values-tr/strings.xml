@@ -81,4 +81,9 @@ Başka bir sağlayıcıdan kendi SMTP sunucusu üzerinden e-posta gönderebilmek
     <string name="ext_identities_server_config_delete_title">Sunucu yapılandırması silinsin mi?</string>
     <string name="ext_identities_server_config_delete_message">%1$s kullanan kimlikler, başka bir sunucu yapılandırması atanana kadar çalışmayı durdurur.</string>
     <string name="ext_identities_server_config_in_use">%1$d kimlik tarafından kullanılıyor</string>
+    <string name="ext_identities_enabled_hint">Etkinleştirildiğinde bu kimlik, oluştururken gönderen olarak sunulur. Silmeden gizlemek için devre dışı bırakın.</string>
+    <string name="ext_identities_apply_label_button">Mevcut gönderilen e-postalara etiket ekle</string>
+    <string name="ext_identities_remove_label_button">Gönderilen e-postalardan etiketi kaldır</string>
+    <string name="ext_identities_label_apply_done">Bitti</string>
+    <string name="ext_identities_add_identity_needs_server">Kimlik eklemeyi etkinleştirmek için önce bir SMTP sunucu yapılandırması ekleyin.</string>
 </resources>

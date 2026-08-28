@@ -80,4 +80,9 @@ Lägg till en för att skicka e-post från en annan leverantör via dess egen SM
     <string name="ext_identities_server_config_delete_title">Ta bort serverkonfigurationen?</string>
     <string name="ext_identities_server_config_delete_message">Identiteter som använder %1$s slutar fungera tills de tilldelas en annan serverkonfiguration.</string>
     <string name="ext_identities_server_config_in_use">Används av %1$d identiteter</string>
+    <string name="ext_identities_enabled_hint">När aktiverad erbjuds denna identitet som avsändare vid utformning. Inaktivera för att dölja den utan att ta bort den.</string>
+    <string name="ext_identities_apply_label_button">Lägg till etikett på befintliga skickade e-postmeddelanden</string>
+    <string name="ext_identities_remove_label_button">Ta bort etikett från skickade e-postmeddelanden</string>
+    <string name="ext_identities_label_apply_done">Klart</string>
+    <string name="ext_identities_add_identity_needs_server">Lägg först till en SMTP-serverkonfiguration för att aktivera tillägg av identiteter.</string>
 </resources>

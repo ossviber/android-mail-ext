@@ -80,4 +80,9 @@ Tilføj en for at sende e-mail fra en anden udbyder via dens egen SMTP-server.</
     <string name="ext_identities_server_config_delete_title">Slet serverkonfigurationen?</string>
     <string name="ext_identities_server_config_delete_message">Identiteter, der bruger %1$s, holder op med at fungere, indtil de får tildelt en anden serverkonfiguration.</string>
     <string name="ext_identities_server_config_in_use">Bruges af %1$d identiteter</string>
+    <string name="ext_identities_enabled_hint">Når aktiveret tilbydes denne identitet som afsender ved udarbejdelse. Deaktiver for at skjule den uden at slette den.</string>
+    <string name="ext_identities_apply_label_button">Tilføj label til eksisterende sendte e-mails</string>
+    <string name="ext_identities_remove_label_button">Fjern label fra sendte e-mails</string>
+    <string name="ext_identities_label_apply_done">Færdig</string>
+    <string name="ext_identities_add_identity_needs_server">Tilføj først en SMTP-serverkonfiguration for at aktivere tilføjelse af identiteter.</string>
 </resources>
