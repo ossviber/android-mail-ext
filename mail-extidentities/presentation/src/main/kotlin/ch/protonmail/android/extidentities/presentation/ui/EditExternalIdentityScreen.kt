@@ -107,10 +107,7 @@ fun EditExternalIdentityScreen(
                 onServerConfigSelected = viewModel::selectServerConfig,
                 onTest = viewModel::testConnection,
                 onSave = { viewModel.save(onDone = onBackClick) },
-                onDeleteRequested = { showDeleteDialog = true },
-                onEnableAutomation = viewModel::enableSentAutomation,
-                onDisableAutomation = viewModel::disableSentAutomation,
-                onApplyLabel = viewModel::applyLabelToExisting
+                onDeleteRequested = { showDeleteDialog = true }
             )
         }
     )
@@ -153,10 +150,7 @@ private fun EditExternalIdentityContent(
     onServerConfigSelected: (Long) -> Unit,
     onTest: () -> Unit,
     onSave: () -> Unit,
-    onDeleteRequested: () -> Unit,
-    onEnableAutomation: () -> Unit,
-    onDisableAutomation: () -> Unit,
-    onApplyLabel: (Boolean) -> Unit
+    onDeleteRequested: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     var showPassword by remember { mutableStateOf(false) }
@@ -242,13 +236,6 @@ private fun EditExternalIdentityContent(
             text = stringResource(R.string.ext_identities_enabled_hint),
             style = MaterialTheme.typography.bodySmall,
             color = ProtonTheme.colors.textWeak
-        )
-
-        SentCopyAutomationCard(
-            state = state,
-            onEnable = onEnableAutomation,
-            onDisable = onDisableAutomation,
-            onApplyLabel = onApplyLabel
         )
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
@@ -420,116 +407,6 @@ private fun EditExternalIdentityContent(
         }
 
         Spacer(modifier = Modifier.padding(bottom = 24.dp))
-    }
-}
-
-@Composable
-private fun SentCopyAutomationCard(
-    state: EditExternalIdentityState,
-    onEnable: () -> Unit,
-    onDisable: () -> Unit,
-    onApplyLabel: (Boolean) -> Unit
-) {
-    // The toggle mirrors the server-side filter rule: on = automation active.
-    // The label itself survives toggling off, so the button below can still
-    // remove it from already-stored sent e-mails.
-    val automationActive = state.sentFilterId != null
-    val labelExists = state.sentLabelId != null
-
-    HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = stringResource(R.string.ext_identities_automation_title),
-                style = MaterialTheme.typography.titleMedium,
-                color = ProtonTheme.colors.textNorm
-            )
-        }
-        Switch(
-            checked = automationActive,
-            onCheckedChange = { want ->
-                when {
-                    want -> onEnable()
-                    else -> onDisable()
-                }
-            },
-            enabled = !state.isSettingUpAutomation && !state.isNew
-        )
-    }
-
-    Text(
-        text = stringResource(R.string.ext_identities_automation_description),
-        style = MaterialTheme.typography.bodySmall,
-        color = ProtonTheme.colors.textWeak
-    )
-
-    when {
-        state.isSettingUpAutomation -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
-            Text(
-                text = stringResource(R.string.ext_identities_automation_running),
-                style = MaterialTheme.typography.bodyMedium,
-                color = ProtonTheme.colors.textWeak
-            )
-        }
-
-        automationActive -> {
-            Text(
-                text = stringResource(R.string.ext_identities_automation_done),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-            state.sentLabelName?.let { labelName ->
-                Text(
-                    text = labelName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = ProtonTheme.colors.textWeak
-                )
-            }
-        }
-
-        state.needsProtonSession -> Text(
-            text = stringResource(R.string.ext_identities_automation_needs_session),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.error
-        )
-
-        state.automationFailed -> Text(
-            text = stringResource(R.string.ext_identities_automation_failed),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error
-        )
-    }
-
-    // Filter-rule button: while the automation is active it labels every
-    // existing sent e-mail; after the toggle is switched off it removes the
-    // label again. Both directions need the label to exist.
-    OutlinedButton(
-        onClick = { onApplyLabel(automationActive) },
-        enabled = !state.isSettingUpAutomation && !state.isApplyingLabel && labelExists,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        if (state.isApplyingLabel) {
-            CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
-            Spacer(modifier = Modifier.size(8.dp))
-        }
-        Text(
-            stringResource(
-                if (automationActive) {
-                    R.string.ext_identities_apply_label_button
-                } else {
-                    R.string.ext_identities_remove_label_button
-                }
-            )
-        )
-    }
-    if (state.labelApplyDone) {
-        Text(
-            text = stringResource(R.string.ext_identities_label_apply_done),
-            style = MaterialTheme.typography.bodySmall,
-            color = ProtonTheme.colors.textWeak
-        )
     }
 }
 
